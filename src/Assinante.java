@@ -8,12 +8,12 @@ public class Assinante {
 	private Chamada[] chamadas;
 	
 	
-	public Assinante(long cpf, String nome, int numero, int tamanhoVetor) {
+	public Assinante(long cpf, String nome, int numero) {
 		
 		this.cpf = cpf;
 		this.nome = nome;
 		this.numero = numero;
-		this.chamadas = new Chamada[tamanhoVetor];
+		this.chamadas = new Chamada[numChamadas];
 		
 	}
 	

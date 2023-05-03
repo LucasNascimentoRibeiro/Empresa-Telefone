@@ -8,7 +8,7 @@ public class PrePago extends Assinante {
 	
 	public PrePago(long cpf, String nome, int numero) {
 		super(cpf, nome, numero);
-		this.recarga = new Recarga[numRecargas];
+		this.recarga = new Recarga[10];
 	}
 	
 	public void FazerChamada(GregorianCalendar data, int duracao) {

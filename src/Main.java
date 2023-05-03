@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
+		
+		Telefonia telefonia = new Telefonia();
 
 		Scanner scanner = new Scanner(System.in);
 		
@@ -27,19 +29,19 @@ public class Main {
 			
 			
 			switch (aux) {
-				case 1:
+				case 1: telefonia.CadastrarAssinante();
 					break;
 				
-				case 2:
+				case 2: telefonia.ListarAssinantes();
 					break;
 				
-				case 3:
+				case 3: telefonia.FazerChamada();
 					break;
 				
-				case 4:
+				case 4: telefonia.FazerRecarga();
 					break;
 				
-				case 5:
+				case 5: telefonia.ImprimirFatura();
 					break;
 				
 				case 6:
@@ -50,9 +52,6 @@ public class Main {
 					System.out.println("Opção inexistente, escolha uma das opções acima.");
 					break;
 			}
-			
-			
-			
 			
 			System.out.println("Pressione qualquer tecla para continuar");
 			scanner.nextInt();

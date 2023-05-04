@@ -75,6 +75,7 @@ public class Telefonia {
 				Recarga recarga = new Recarga(calendar, valorRecarga);
 				PrePago novoPrePago = new PrePago(cpf, nome, num,  recarga);
 				prePagos[numPrePagos++] = novoPrePago;
+				novoPrePago.Recarregar(calendar, valorRecarga);
 
 			}else{
 				System.out.println("\nInforme o valor da mensal da assinatura do cliente:");
@@ -147,7 +148,7 @@ public class Telefonia {
 
 					calendar.setTime(data);
 
-					System.out.println("\nInforme a duração da chamada no seguinte formato:");
+					System.out.println("\nInforme a duração da chamada em minutos:");
 					int duracao = scanner.nextInt();
 					scanner.nextLine();
 
@@ -203,6 +204,7 @@ public class Telefonia {
 		do{
 			System.out.println("Informe o CPF do assinante:");
 			long cpf = scanner.nextLong();
+			String longbuffer = scanner.nextLine();
 
 				PrePago prePago = LocalizarPrePago(cpf);
 
@@ -258,7 +260,7 @@ public class Telefonia {
 	
 	private PosPago LocalizarPosPago(long cpf) {
 
-		for (int i = 0; i < numPrePagos; i++){
+		for (int i = 0; i < numPosPagos; i++){
 			PosPago posPago = posPagos[i];
 
 			if(cpf == posPago.getCpf()){
@@ -324,13 +326,9 @@ public class Telefonia {
 			System.out.println("Pressione Enter para continuar");
 			scanner.nextLine();
 			scanner.nextLine();
-			
 		}
-
-		scanner.close();
-
+		
+		scanner.close();	
 	}
-
-	
 	
 }

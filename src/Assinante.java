@@ -5,7 +5,7 @@ public class Assinante {
 	private String nome;
 	private int numero;
 	protected int numChamadas;
-	private Chamada[] chamadas;
+	protected Chamada[] chamadas;
 	
 	
 	public Assinante(long cpf, String nome, int numero) {
@@ -27,7 +27,7 @@ public class Assinante {
 				+ "\n nome = " + nome 
 				+ "\n numero = " + numero  
 				+ "\n numero de chamadas = " + numChamadas
-				+ "\n Chamadas: = " + chamadas; 
+				+ "\n Chamadas: = " + chamadas + "\n"; 
 	}
 
 	

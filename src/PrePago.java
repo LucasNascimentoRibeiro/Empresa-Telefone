@@ -30,10 +30,10 @@ public class PrePago extends Assinante {
 			if(custo > creditos){
 				System.out.println("Creditos insuficientes");
 			}else{
-			Chamada[] chamadas = null;
 			chamadas[numChamadas++] = new Chamada(duracao, data);
 			creditos -= custo;
 				System.out.println("Chamada feita");
+				System.out.printf("Credito Atual: %.2f \n" , creditos);
 			}
 		}else{
 			System.out.println("Número de chamadas excedido");

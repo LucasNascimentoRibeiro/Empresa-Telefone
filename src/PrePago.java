@@ -6,7 +6,7 @@ public class PrePago extends Assinante {
 	private int numRecargas;
 	private float creditos;
 	
-	public PrePago(long cpf, String nome, int numero) {
+	public PrePago(long cpf, String nome, int numero, Recarga recarga) {
 		super(cpf, nome, numero);
 		this.recarga = new Recarga[10];
 	}

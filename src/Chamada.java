@@ -4,7 +4,7 @@ import java.util.GregorianCalendar;
 public class Chamada {
 
 	private int duracao;
-	private GregorianCalendar data; // Deveria ser "Date"
+	private GregorianCalendar data;
 
 	public Chamada(int duracao, GregorianCalendar data) {
 		this.duracao = duracao;

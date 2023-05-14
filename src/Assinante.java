@@ -1,11 +1,10 @@
-
 public class Assinante {
 
 	private long cpf;
 	private String nome;
 	private int numero;
 	protected int numChamadas;
-	protected Chamada[] chamadas; // Isso não deveria existir
+	protected Chamada[] chamadas;
 
 	public Assinante(long cpf, String nome, int numero) {
 		this.cpf = cpf;

@@ -28,5 +28,4 @@ public class Recarga {
 				+ "\n data= " + formatacao.format(data)
 				+ "\n valor=" + valor;
 	}
-
 }

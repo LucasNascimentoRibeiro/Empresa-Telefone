@@ -16,7 +16,7 @@ public class Telefonia {
 		this.posPagos = new PosPago[10];
 	}
 
-	public void CadastrarAssinante() {
+	public void cadastrarAssinante() {
 		Scanner scanner = new Scanner(System.in);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		GregorianCalendar calendar = new GregorianCalendar();
@@ -73,7 +73,7 @@ public class Telefonia {
 			Recarga recarga = new Recarga(calendar, valorRecarga);
 			PrePago novoPrePago = new PrePago(cpf, nome, num, recarga);
 			prePagos[numPrePagos++] = novoPrePago;
-			novoPrePago.Recarregar(calendar, valorRecarga);
+			novoPrePago.recarregar(calendar, valorRecarga);
 
 		} else {
 			System.out.println("\nInforme o valor da mensal da assinatura do cliente:");
@@ -85,7 +85,7 @@ public class Telefonia {
 		}
 	}
 
-	public void ListarAssinantes() {
+	public void listarAssinantes() {
 		System.out.println("Assinantes de Pré-Pago:");
 		for (int i = 0; i < numPrePagos; i++) {
 			PrePago prePago = prePagos[i];
@@ -99,7 +99,7 @@ public class Telefonia {
 		}
 	}
 
-	public void FazerChamada() {
+	public void fazerChamada() {
 		Scanner scanner = new Scanner(System.in);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		GregorianCalendar calendar = new GregorianCalendar();
@@ -124,7 +124,7 @@ public class Telefonia {
 			scanner.nextLine();
 
 			if (tipo == 1) {
-				PrePago prePago = LocalizarPrePago(cpf);
+				PrePago prePago = localizarPrePago(cpf);
 
 				if (prePago != null) {
 					System.out.println("\nInforme a data da chamada (dd/MM/yyyy):");
@@ -150,13 +150,13 @@ public class Telefonia {
 					int duracao = scanner.nextInt();
 					scanner.nextLine();
 
-					prePago.FazerChamada(calendar, duracao);
+					prePago.fazerChamada(calendar, duracao);
 				} else {
 					System.out.println("O CPF não consta no registro de assinantes Pré-pago.");
 					foiNull = true;
 				}
 			} else {
-				PosPago posPago = LocalizarPosPago(cpf);
+				PosPago posPago = localizarPosPago(cpf);
 
 				if (posPago != null) {
 					System.out.println("\nInforme a data da chamada (dd/MM/yyyy):");
@@ -182,7 +182,7 @@ public class Telefonia {
 					int duracao = scanner.nextInt();
 					scanner.nextLine();
 
-					posPago.FazerChamada(calendar, duracao);
+					posPago.fazerChamada(calendar, duracao);
 				} else {
 					System.out.println("O CPF não consta no registro de assinantes Pós-pago.");
 					foiNull = true;
@@ -192,7 +192,7 @@ public class Telefonia {
 
 	}
 
-	public void FazerRecarga() {
+	public void fazerRecarga() {
 		Scanner scanner = new Scanner(System.in);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		GregorianCalendar calendar = new GregorianCalendar();
@@ -204,7 +204,7 @@ public class Telefonia {
 			long cpf = scanner.nextLong();
 			String longbuffer = scanner.nextLine();
 
-			PrePago prePago = LocalizarPrePago(cpf);
+			PrePago prePago = localizarPrePago(cpf);
 
 			if (prePago != null) {
 				System.out.println("\nInforme a data da recarga (dd/MM/yyyy):");
@@ -230,7 +230,7 @@ public class Telefonia {
 				float valor = scanner.nextFloat();
 				scanner.nextLine();
 
-				prePago.Recarregar(calendar, valor);
+				prePago.recarregar(calendar, valor);
 			} else {
 				System.out.println("O CPF não consta no registro de assinantes Pré-pago.");
 				foiNull = true;
@@ -239,12 +239,7 @@ public class Telefonia {
 		} while (foiNull == true);
 	}
 
-	public void ImprimirFatura() {
-
-	}
-
-	private PrePago LocalizarPrePago(long cpf) {
-
+	private PrePago localizarPrePago(long cpf) {
 		for (int i = 0; i < numPrePagos; i++) {
 			PrePago prePago = prePagos[i];
 
@@ -256,8 +251,7 @@ public class Telefonia {
 		return null;
 	}
 
-	private PosPago LocalizarPosPago(long cpf) {
-
+	private PosPago localizarPosPago(long cpf) {
 		for (int i = 0; i < numPosPagos; i++) {
 			PosPago posPago = posPagos[i];
 
@@ -267,6 +261,9 @@ public class Telefonia {
 		}
 
 		return null;
+	}
+
+	public void imprimirFatura() {
 
 	}
 
@@ -296,23 +293,23 @@ public class Telefonia {
 
 			switch (aux) {
 				case 1:
-					telefonia.CadastrarAssinante();
+					telefonia.cadastrarAssinante();
 					break;
 
 				case 2:
-					telefonia.ListarAssinantes();
+					telefonia.listarAssinantes();
 					break;
 
 				case 3:
-					telefonia.FazerChamada();
+					telefonia.fazerChamada();
 					break;
 
 				case 4:
-					telefonia.FazerRecarga();
+					telefonia.fazerRecarga();
 					break;
 
 				case 5:
-					telefonia.ImprimirFatura();
+					telefonia.imprimirFatura();
 					break;
 
 				case 6:
@@ -331,5 +328,4 @@ public class Telefonia {
 
 		scanner.close();
 	}
-
 }

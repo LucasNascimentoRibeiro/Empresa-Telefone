@@ -2,16 +2,16 @@ import java.util.GregorianCalendar;
 
 public class PrePago extends Assinante {
 
-	private Recarga[] recargas;
-	private int numRecargas = 0;
 	private float creditos;
+	private int numRecargas = 0;
+	private Recarga[] recargas;
 
 	public PrePago(long cpf, String nome, int numero, Recarga recargas) {
 		super(cpf, nome, numero);
 		this.recargas = new Recarga[10];
 	}
 
-	public void Recarregar(GregorianCalendar data, float valor) {
+	public void recarregar(GregorianCalendar data, float valor) {
 		if (numRecargas < 10) {
 			Recarga novaRecarga = new Recarga(data, valor);
 			recargas[numRecargas++] = novaRecarga;
@@ -22,9 +22,8 @@ public class PrePago extends Assinante {
 		}
 	}
 
-	public void FazerChamada(GregorianCalendar data, int duracao) {
+	public void fazerChamada(GregorianCalendar data, int duracao) {
 		if (numChamadas < 10) {
-
 			double custo = duracao * 1.45;
 
 			if (custo > creditos) {
@@ -40,8 +39,7 @@ public class PrePago extends Assinante {
 		}
 	}
 
-	public void ImprimirFatura(int mes) {
+	public void imprimirFatura(int mes) {
 
 	}
-
 }

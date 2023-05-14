@@ -5,21 +5,20 @@ public class Assinante {
 	private String nome;
 	private int numero;
 	protected int numChamadas;
-	protected Chamada[] chamadas;
+	protected Chamada[] chamadas; // Isso não deveria existir
 
 	public Assinante(long cpf, String nome, int numero) {
-
 		this.cpf = cpf;
 		this.nome = nome;
 		this.numero = numero;
 		this.chamadas = new Chamada[10];
-
 	}
 
 	public long getCpf() {
 		return cpf;
 	}
 
+	@Override
 	public String toString() {
 		return "Dados do Assinante: "
 				+ "\n cpf = " + cpf
@@ -28,5 +27,4 @@ public class Assinante {
 				+ "\n numero de chamadas = " + numChamadas
 				+ "\n Chamadas: = " + chamadas + "\n";
 	}
-
 }

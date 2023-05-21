@@ -6,7 +6,7 @@ public class PrePago extends Assinante {
 	private int numRecargas = 0;
 	private Recarga[] recargas;
 
-	public PrePago(long cpf, String nome, int numero) {
+	public PrePago(long cpf, String nome, long numero) {
 		super(cpf, nome, numero);
 		this.recargas = new Recarga[10];
 	}
@@ -23,20 +23,28 @@ public class PrePago extends Assinante {
 	}
 
 	public void fazerChamada(GregorianCalendar data, int duracao) {
-		if (numChamadas < 10) {
-			double custo = duracao * 1.45;
+		if (10 > numChamadas) {
+			float custo = (float) (duracao * 1.45);
 
-			if (custo > creditos) {
-				System.out.println("Creditos insuficientes");
-			} else {
-				chamadas[numChamadas++] = new Chamada(duracao, data);
-				creditos -= custo;
-				System.out.println("Chamada feita");
+			if (creditos > custo) {
+				int novoIndiceChamada = numChamadas + 1;
+
+				chamadas[novoIndiceChamada] = new Chamada(duracao, data);
+
+				creditos = creditos - custo;
+
+				System.out.println("Chamada feita!\n");
 				System.out.printf("Credito Atual: %.2f \n", creditos);
-			}
-		} else {
-			System.out.println("Número de chamadas excedido");
-		}
+
+				return;
+			} 
+
+			System.out.println("Creditos insuficientes");
+
+			return;
+		} 
+
+		System.out.println("Número de chamadas excedido");
 	}
 
 	public void imprimirFatura(int mes) {

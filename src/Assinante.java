@@ -2,11 +2,11 @@ public class Assinante {
 
 	private long cpf;
 	private String nome;
-	private int numero;
+	private long numero;
 	protected int numChamadas;
 	protected Chamada[] chamadas;
 
-	public Assinante(long cpf, String nome, int numero) {
+	public Assinante(long cpf, String nome, long numero) {
 		this.cpf = cpf;
 		this.nome = nome;
 		this.numero = numero;
@@ -19,11 +19,10 @@ public class Assinante {
 
 	@Override
 	public String toString() {
-		return "Dados do Assinante: "
-				+ "\n cpf = " + cpf
-				+ "\n nome = " + nome
-				+ "\n numero = " + numero
-				+ "\n numero de chamadas = " + numChamadas
-				+ "\n Chamadas: = " + chamadas + "\n";
+		return "\n		- Nome: " + nome
+				+ "\n		- CPF: " + cpf
+				+ "\n		- Número: " + numero
+				+ "\n		- Nº Chamadas: " + numChamadas
+				+ "\n		- Chamadas: " + chamadas.toString();
 	}
 }

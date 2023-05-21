@@ -1,6 +1,5 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -146,7 +145,7 @@ public class Telefonia {
 				// Informar MINUTO
 				System.out.println("\nDigite o MINUTO da duração da chamada (Ex.: 5):");
 				int duracao = scanner.nextInt();
-				
+
 				switch (tipo) {
 					// Cadastrar Pré-Pago
 					case 1:
@@ -186,49 +185,72 @@ public class Telefonia {
 
 	public void fazerRecarga() {
 		Scanner scanner = new Scanner(System.in);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		GregorianCalendar calendar = new GregorianCalendar();
 
-		boolean foiNull = false;
+		while (true) {
+			System.out.println("+-------------------------+");
+			System.out.println("|                         |");
+			System.out.println("|     Selecione o tipo    |");
+			System.out.println("|       de Assinatura     |");
+			System.out.println("|                         |");
+			System.out.println("|   1. Pré-pago           |");
+			System.out.println("|                         |");
+			System.out.println("+-------------------------+");
 
-		do {
-			System.out.println("Informe o CPF do assinante:");
-			long cpf = scanner.nextLong();
-			String longbuffer = scanner.nextLine();
+			System.out.print("Digite sua opção: ");
+			int tipo = scanner.nextInt();
 
-			PrePago prePago = localizarPrePago(cpf);
+			switch (tipo) {
+				// Solicitar informações do cliente PRÉ-PAGO
+				case 1:
+					System.out.print("\nInforme o CPF do assinante(apenas números): ");
+					long cpf = scanner.nextLong();
+					scanner.nextLine();
 
-			if (prePago != null) {
-				System.out.println("\nInforme a data da recarga (dd/MM/yyyy):");
-				String dataStr = scanner.nextLine();
+					PrePago prePago = localizarPrePago(cpf);
 
-				Date data = null;
-				boolean foi = false;
-
-				while (!foi) {
-					try {
-						data = dateFormat.parse(dataStr);
-						foi = true;
-					} catch (ParseException e) {
-						System.out.println("\nA data não foi informada no formato correto");
-						System.out.println("Por favor, informe a data da recarga no formato dd/MM/yyyy:");
-						dataStr = scanner.nextLine();
+					if (prePago == null) {
+						System.out.println("\nO CPF não consta no registro de assinantes Pré-Pago.");
+						break;
 					}
-				}
 
-				calendar.setTime(data);
+					GregorianCalendar calendario = new GregorianCalendar();
 
-				System.out.println("\nInforme o valor da recarga");
-				float valor = scanner.nextFloat();
-				scanner.nextLine();
+					// Informar DIA
+					System.out.println("\nDigite o DIA da recarga (Ex.: 01):");
+					int dia = scanner.nextInt();
+					calendario.set(GregorianCalendar.DATE, dia);
 
-				prePago.recarregar(calendar, valor);
-			} else {
-				System.out.println("O CPF não consta no registro de assinantes Pré-pago.");
-				foiNull = true;
+					// Informar MÊS
+					System.out.println("\nDigite o MÊS da recarga (Ex.: 06):");
+					int mes = scanner.nextInt();
+					calendario.set(GregorianCalendar.MONTH, (mes - 1));
+
+					// Informar ANO
+					System.out.println("\nDigite o ANO da recarga (Ex.: 2023):");
+					int ano = scanner.nextInt();
+					calendario.set(GregorianCalendar.YEAR, ano);
+
+					// Informar VALOR
+					System.out.println("\nInforme o VALOR da recarga");
+					float valor = scanner.nextFloat();
+
+					prePago.recarregar(calendario, valor);
+
+					break;
+
+				// Voltar
+				case 2:
+					// Adicionar opção de voltar
+					break;
+
+				// Avisa quando o valor for incorreto
+				default:
+					// Adicionar aviso de opção incorreta
+					break;
 			}
-
-		} while (foiNull == true);
+			
+			break;
+		}
 	}
 
 	private PrePago localizarPrePago(long cpf) {

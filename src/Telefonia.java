@@ -120,6 +120,7 @@ public class Telefonia {
 			System.out.println("|                          |");
 			System.out.println("|   1. Pré-pago            |");
 			System.out.println("|   2. Pós-pago            |");
+			System.out.println("|   3. Voltar              |");
 			System.out.println("|                          |");
 			System.out.println("+--------------------------+");
 
@@ -193,10 +194,11 @@ public class Telefonia {
 				break;
 			} else if (tipo == 3) {
 				// Voltar
-				// Adicionar opção de voltar
+				break;
 			} else {
 				// Avisa quando o valor for incorreto
-				// Adicionar aviso de opção incorreta
+				avisarOpcaoIncorreta();
+				avisarPressione(scanner);
 			}
 		}
 	}

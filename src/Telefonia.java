@@ -1,6 +1,3 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -106,6 +103,8 @@ public class Telefonia {
 		Scanner scanner = new Scanner(System.in);
 
 		while (true) {
+			limparTela();
+
 			System.out.println("+--------------------------+");
 			System.out.println("|                          |");
 			System.out.println("|     Selecione o tipo     |");
@@ -124,6 +123,31 @@ public class Telefonia {
 				System.out.print("\nInforme o CPF do assinante(apenas números): ");
 				long cpf = scanner.nextLong();
 				scanner.nextLine();
+
+				PrePago prePago = null;
+				PosPago posPago = null;
+
+				// Localizar Pré-Pago
+				if (tipo == 1) {
+					prePago = localizarPrePago(cpf);
+
+					if (prePago == null) {
+						System.out.println("\nO CPF não consta no registro de assinantes Pré-Pago.");
+						avisarPressione(scanner);
+						continue;
+					}
+				}
+
+				// Localizar Pós-Pago
+				if (tipo == 2) {
+					posPago = localizarPosPago(cpf);
+
+					if (posPago == null) {
+						System.out.println("\nO CPF não consta no registro de assinantes Pós-Pago.");
+						avisarPressione(scanner);
+						continue;
+					}
+				}
 
 				GregorianCalendar calendario = new GregorianCalendar();
 
@@ -146,30 +170,16 @@ public class Telefonia {
 				System.out.println("\nDigite o MINUTO da duração da chamada (Ex.: 5):");
 				int duracao = scanner.nextInt();
 
-				switch (tipo) {
-					// Cadastrar Pré-Pago
-					case 1:
-						PrePago prePago = localizarPrePago(cpf);
+				//Validar calendário
 
-						if (prePago == null) {
-							System.out.println("O CPF não consta no registro de assinantes Pré-Pago.");
-						}
+				// Cadastrar Pré-Pago
+				if (tipo == 1) {
+					prePago.fazerChamada(calendario, duracao);
+				}
 
-						prePago.fazerChamada(calendario, duracao);
-
-						break;
-
-					// Cadastrar Pós-Pago
-					case 2:
-						PosPago posPago = localizarPosPago(cpf);
-
-						if (posPago == null) {
-							System.out.println("O CPF não consta no registro de assinantes Pós-Pago.");
-						}
-
-						posPago.fazerChamada(calendario, duracao);
-
-						break;
+				// Cadastrar Pos-Pago
+				if (tipo == 2) {
+					posPago.fazerChamada(calendario, duracao);
 				}
 
 				break;
@@ -248,7 +258,7 @@ public class Telefonia {
 					// Adicionar aviso de opção incorreta
 					break;
 			}
-			
+
 			break;
 		}
 	}
@@ -378,7 +388,6 @@ public class Telefonia {
 				+ "para continuar!" + "\033[0m");
 
 		scanner.nextLine();
-		scanner.nextLine();
 	}
 
 	private static void avisarErroInterno(Scanner scanner) {
@@ -387,7 +396,6 @@ public class Telefonia {
 		System.out.println("\033[1;37m" + "\nPressione" + "\033[1;35m" + " ENTER " + "\033[1;37m"
 				+ "para continuar!" + "\033[0m");
 
-		scanner.nextLine();
 		scanner.nextLine();
 	}
 

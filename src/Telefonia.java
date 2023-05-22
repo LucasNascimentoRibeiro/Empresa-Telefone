@@ -213,6 +213,7 @@ public class Telefonia {
 			System.out.println("|       de Assinatura     |");
 			System.out.println("|                         |");
 			System.out.println("|   1. Pré-pago           |");
+			System.out.println("|   2. Voltar             |");
 			System.out.println("|                         |");
 			System.out.println("+-------------------------+");
 
@@ -260,12 +261,12 @@ public class Telefonia {
 
 				// Voltar
 				case 2:
-					// Adicionar opção de voltar
 					break;
 
 				// Avisa quando o valor for incorreto
 				default:
-					// Adicionar aviso de opção incorreta
+					avisarOpcaoIncorreta();
+					avisarPressione(scanner);
 					break;
 			}
 

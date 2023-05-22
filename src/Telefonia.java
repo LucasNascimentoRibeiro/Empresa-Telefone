@@ -20,6 +20,8 @@ public class Telefonia {
 		Scanner scanner = new Scanner(System.in);
 
 		while (true) {
+			limparTela();
+
 			System.out.println("+--------------------------+");
 			System.out.println("|                          |");
 			System.out.println("|     Selecione o tipo     |");
@@ -27,6 +29,7 @@ public class Telefonia {
 			System.out.println("|                          |");
 			System.out.println("|   1. Pré-pago            |");
 			System.out.println("|   2. Pós-pago            |");
+			System.out.println("|   3. Voltar              |");
 			System.out.println("|                          |");
 			System.out.println("+--------------------------+");
 
@@ -39,27 +42,30 @@ public class Telefonia {
 				long cpf = scanner.nextLong();
 				scanner.nextLine();
 
-				System.out.print("\nInforme o nome do assinante: ");
+				System.out.print("\nDigite o NOME do assinante: ");
 				String nome = scanner.nextLine();
 
-				System.out.print("\nInforme o número do assinante (apenas números): ");
+				System.out.print("\nDigite o NÚMERO do assinante (apenas números): ");
 				long numero = scanner.nextLong();
 
-				switch (tipo) {
-					// Cadastrar Pré-Pago
-					case 1:
-						PrePago novoPrePago = new PrePago(cpf, nome, numero);
-						prePagos[numPrePagos++] = novoPrePago;
-						break;
+				// Cadastrar Pré-Pago
+				if (tipo == 1) {
+					PrePago novoPrePago = new PrePago(cpf, nome, numero);
+					prePagos[numPrePagos] = novoPrePago;
 
-					// Cadastrar Pós-Pago
-					case 2:
-						System.out.print("\nInforme o valor da mensal da assinatura do cliente: ");
-						float assinatura = scanner.nextFloat();
+					numPrePagos++;
+				}
 
-						PosPago novoPosPago = new PosPago(cpf, nome, numero, assinatura);
-						posPagos[numPosPagos++] = novoPosPago;
-						break;
+				// Cadastrar Pós-Pago
+				if (tipo == 2) {
+					// Informar o VALOR
+					System.out.print("\nDigite o VALOR da mensalidade: ");
+					float assinatura = scanner.nextFloat();
+
+					PosPago novoPosPago = new PosPago(cpf, nome, numero, assinatura);
+					posPagos[numPosPagos] = novoPosPago;
+					
+					numPosPagos++;
 				}
 
 				System.out.println("\nAssinante cadastrado com sucesso!");
@@ -67,10 +73,11 @@ public class Telefonia {
 				break;
 			} else if (tipo == 3) {
 				// Voltar
-				// Adicionar opção de voltar
+				break;
 			} else {
 				// Avisa quando o valor for incorreto
-				// Adicionar aviso de opção incorreta
+				avisarOpcaoIncorreta();
+				avisarPressione(scanner);
 			}
 		}
 	}
@@ -83,6 +90,7 @@ public class Telefonia {
 		} else {
 			for (int i = 0; i < numPrePagos; i++) {
 				PrePago prePago = prePagos[i];
+
 				System.out.println("\n	" + (i + 1) + "º " + "Assinante:" + prePago.toString());
 			}
 		}
@@ -170,7 +178,7 @@ public class Telefonia {
 				System.out.println("\nDigite o MINUTO da duração da chamada (Ex.: 5):");
 				int duracao = scanner.nextInt();
 
-				//Validar calendário
+				// Validar calendário
 
 				// Cadastrar Pré-Pago
 				if (tipo == 1) {
@@ -388,6 +396,7 @@ public class Telefonia {
 				+ "para continuar!" + "\033[0m");
 
 		scanner.nextLine();
+		scanner.nextLine();
 	}
 
 	private static void avisarErroInterno(Scanner scanner) {
@@ -397,13 +406,14 @@ public class Telefonia {
 				+ "para continuar!" + "\033[0m");
 
 		scanner.nextLine();
+		scanner.nextLine();
 	}
 
 	private static void avisarOpcaoIncorreta() {
 		System.out.println("\033[1;33m" + "\nAviso " + "\033[1;37m" + "do sistema:");
 		System.out.println("\033[1;33m" + "> " + "\033[0m" + "Opção Incorreta...");
-		System.out.println("\033[1;33m" + "> " + "\033[0m" + "Escolha uma das opções de " + "\033[1;32m"
-				+ "1 a 6!" + "\033[0m");
+		System.out.println("\033[1;33m" + "> " + "\033[0m" + "Verifique a opção inserida\nde acordo com o "
+				+ "\033[1;32m" + "menu acima" + "\033[0m");
 	}
 
 	private static void encerrarPrograma() {

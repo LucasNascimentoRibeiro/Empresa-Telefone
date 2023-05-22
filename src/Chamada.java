@@ -24,6 +24,6 @@ public class Chamada {
 		SimpleDateFormat formatacao = new SimpleDateFormat("dd/MM/yyyy");
 
 		return "\n			> Data: " + formatacao.format(data.getTime())
-				+ "\n			> Duracao da chamada: " + duracao;
+				+ "\n			> Duração: " + duracao;
 	}
 }

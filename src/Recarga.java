@@ -21,11 +21,9 @@ public class Recarga {
 
 	@Override
 	public String toString() {
-
 		SimpleDateFormat formatacao = new SimpleDateFormat("dd/MM/yyyy");
-
-		return "Recarga: "
-				+ "\n data= " + formatacao.format(data)
-				+ "\n valor=" + valor;
+		
+		return "\n			> Data: " + formatacao.format(data.getTime())
+				+ "\n			> Valor: " + String.format("%.2f", valor);
 	}
 }

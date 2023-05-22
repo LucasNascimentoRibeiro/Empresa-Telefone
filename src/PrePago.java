@@ -14,7 +14,10 @@ public class PrePago extends Assinante {
 	public void recarregar(GregorianCalendar data, float valor) {
 		if (numRecargas < 10) {
 			Recarga novaRecarga = new Recarga(data, valor);
-			recargas[numRecargas++] = novaRecarga;
+
+			recargas[numRecargas] = novaRecarga;
+
+			numRecargas++;
 
 			creditos += valor;
 		} else {
@@ -30,24 +33,80 @@ public class PrePago extends Assinante {
 				chamadas[numChamadas] = new Chamada(duracao, data);
 
 				numChamadas++;
-				
+
 				creditos = creditos - custo;
 
 				System.out.println("\nChamada feita!\n");
-				System.out.printf("Credito Atual: %.2f \n", creditos);
 
 				return;
-			} 
+			}
 
 			System.out.println("\nCreditos insuficientes");
 
 			return;
-		} 
+		}
 
 		System.out.println("Número de chamadas excedido");
 	}
 
-	public void imprimirFatura(int mes) {
+	public void imprimirFatura(int mes)  {
+		int qntdRecargasMes = 0;
+		float totalValorRecarga = 0;
+		String listaRecargas = "";
+		if (numRecargas > 0) {
+			for (int i = 0; i < numRecargas; i++) {
+				Recarga recarga = recargas[i];
 
+				int mesChamada = (recarga.getData().get(GregorianCalendar.MONTH) + 1);
+
+				if (mesChamada == mes) {
+					qntdRecargasMes++;
+
+					totalValorRecarga += recarga.getValor();
+
+					listaRecargas += "\n\n	" + qntdRecargasMes + "º Recarga:" + recarga.toString();
+				}
+			}
+		}
+		if (listaRecargas == "") {
+			listaRecargas = "Nenhum.";
+		}
+
+		int qntdChamadasMes = 0;
+		int totalDuracaoChamadas = 0;
+		String listaChamadas = "";
+		if (numChamadas > 0) {
+			for (int i = 0; i < numChamadas; i++) {
+				Chamada chamada = chamadas[i];
+
+				int mesChamada = (chamada.getData().get(GregorianCalendar.MONTH) + 1);
+
+				if (mesChamada == mes) {
+					qntdChamadasMes++;
+					
+					totalDuracaoChamadas += chamada.getDuracao();
+
+					float valor = (float) (chamada.getDuracao() * 1.45);
+					listaChamadas += "\n\n	" + qntdChamadasMes + "º Chamada:" + chamada.toString() 
+						+ "\n			> " + "Valor: " + String.format("%.2f", valor);
+				}
+			}
+		}
+		if (listaChamadas == "") {
+			listaChamadas = "Nenhum.";
+		}
+
+		float creditos = (totalValorRecarga - (float) (totalDuracaoChamadas * 1.45));
+
+		System.out.println("\n- Nome: " + getNome()
+				+ "\n- CPF: " + getCpf()
+				+ "\n- Número: " + getNumero()
+				+ "\n- Créditos: " + String.format("%.2f", creditos)
+				+ "\n- Total Valor Recarga: " + String.format("%.2f", totalValorRecarga)
+				+ "\n- Nº Recargas: " + qntdRecargasMes
+				+ "\n- Lista de Recargas: " + listaRecargas
+				+ "\n- Total Duração Chamadas: " + totalDuracaoChamadas
+				+ "\n- Nº Chamadas: " + qntdChamadasMes
+				+ "\n- Lista de Chamadas: " + listaChamadas);
 	}
 }

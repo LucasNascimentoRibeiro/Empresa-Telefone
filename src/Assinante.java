@@ -17,6 +17,14 @@ public class Assinante {
 		return cpf;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public long getNumero() {
+		return numero;
+	}
+
 	@Override
 	public String toString() {
 		String listaChamada = "";

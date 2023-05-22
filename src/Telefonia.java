@@ -179,8 +179,6 @@ public class Telefonia {
 				System.out.println("\nDigite o MINUTO da duração da chamada (Ex.: 5):");
 				int duracao = scanner.nextInt();
 
-				// Validar calendário
-
 				// Cadastrar Pré-Pago
 				if (tipo == 1) {
 					prePago.fazerChamada(calendario, duracao);
@@ -274,6 +272,57 @@ public class Telefonia {
 		}
 	}
 
+	public void imprimirFatura() {
+		Scanner scanner = new Scanner(System.in);
+
+		while (true) {
+			limparTela();
+
+			System.out.println("+--------------------------+");
+			System.out.println("|                          |");
+			System.out.println("|     Selecione o tipo     |");
+			System.out.println("|       de Assinatura      |");
+			System.out.println("|                          |");
+			System.out.println("|   1. Pré-pago            |");
+			System.out.println("|   2. Pós-pago            |");
+			System.out.println("|   3. Voltar              |");
+			System.out.println("|                          |");
+			System.out.println("+--------------------------+");
+
+			System.out.print("Digite sua opção: ");
+			int tipo = scanner.nextInt();
+
+			if (tipo == 1 || tipo == 2) {
+				// Informar MÊS
+				System.out.println("\nDigite o MÊS da fatura (Ex.: 06):");
+				int mes = scanner.nextInt();
+
+				if(tipo == 1) {
+					for (int i = 0; i < numPrePagos; i++) {
+						PrePago prePago = prePagos[i];
+						prePago.imprimirFatura(mes);
+					}
+				}
+			
+				if (tipo == 2) {
+					for (int i = 0; i < numPosPagos; i++) {
+						PosPago posPago = posPagos[i];
+						posPago.imprimirFatura(mes);
+					}
+				}
+
+				break;
+			} else if (tipo == 3) {
+				// Voltar
+				break;
+			} else {
+				// Avisa quando o valor for incorreto
+				avisarOpcaoIncorreta();
+				avisarPressione(scanner);
+			}
+		}
+	}
+
 	private PrePago localizarPrePago(long cpf) {
 		for (int i = 0; i < numPrePagos; i++) {
 			PrePago prePago = prePagos[i];
@@ -298,9 +347,6 @@ public class Telefonia {
 		return null;
 	}
 
-	public void imprimirFatura() {
-
-	}
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
@@ -318,6 +364,7 @@ public class Telefonia {
 			main(args);
 		}
 	}
+
 
 	// FUNÇÕES DE ORGANIZAÇÃO
 	private static void exibirMenu() {

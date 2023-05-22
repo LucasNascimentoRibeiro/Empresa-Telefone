@@ -333,9 +333,9 @@ public class Telefonia {
 		System.out.println("|" + "\033[1;35m" + "    1. " + "\033[1;34m" + "Cadastrar assinantes    |");
 		System.out.println("|" + "\033[1;35m" + "    2. " + "\033[1;34m" + "Listar assinantes       |");
 		System.out.println("|" + "\033[1;35m" + "    3. " + "\033[1;34m" + "Fazer chamada           |");
-		System.out.println("|" + "\033[1;35m" + "    4. " + "\033[1;34m" + "Fazer Recarga           |");
+		System.out.println("|" + "\033[1;35m" + "    4. " + "\033[1;34m" + "Fazer recarga           |");
 		System.out.println("|" + "\033[1;35m" + "    5. " + "\033[1;34m" + "Imprimir faturas        |");
-		System.out.println("|" + "\033[1;35m" + "    6. " + "\033[1;34m" + "Sair do Programa        |");
+		System.out.println("|" + "\033[1;35m" + "    6. " + "\033[1;34m" + "Sair do programa        |");
 		System.out.println("|                               |");
 		System.out.println("+-------------------------------+");
 		System.out.print("\033[1;37m \nDigite sua opção: " + "\033[0m");

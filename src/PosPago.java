@@ -11,16 +11,16 @@ public class PosPago extends Assinante {
 
 	public void fazerChamada(GregorianCalendar data, int duracao) {
 		if (10 > numChamadas) {
-			int novoIndiceChamada = numChamadas + 1;
-			
-			chamadas[novoIndiceChamada] = new Chamada(duracao, data);
+			chamadas[numChamadas] = new Chamada(duracao, data);
 
-			System.out.println("Chamada feita!");
+			numChamadas++;
+
+			System.out.println("\nChamada feita!");
 			
 			return;
 		}
 		
-		System.out.println("Número de chamadas excedido");
+		System.out.println("\nNúmero de chamadas excedido");
 	}
 
 	public void imprimirFatura(int mes) {

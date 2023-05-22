@@ -19,10 +19,22 @@ public class Assinante {
 
 	@Override
 	public String toString() {
+		String listaChamada = "";
+
+		if (numChamadas > 0) {
+			for (int i = 0; i < numChamadas; i++) {
+				Chamada chamada = chamadas[i];
+
+				listaChamada += "\n\n			" + (i + 1) + "º Chamada:" + chamada.toString();
+			}
+		} else {
+			listaChamada = "Nenhum.";
+		}
+
 		return "\n		- Nome: " + nome
 				+ "\n		- CPF: " + cpf
 				+ "\n		- Número: " + numero
 				+ "\n		- Nº Chamadas: " + numChamadas
-				+ "\n		- Chamadas: " + chamadas.toString();
+				+ "\n		- Chamadas: " + listaChamada;
 	}
 }

@@ -27,19 +27,19 @@ public class PrePago extends Assinante {
 			float custo = (float) (duracao * 1.45);
 
 			if (creditos > custo) {
-				int novoIndiceChamada = numChamadas + 1;
+				chamadas[numChamadas] = new Chamada(duracao, data);
 
-				chamadas[novoIndiceChamada] = new Chamada(duracao, data);
-
+				numChamadas++;
+				
 				creditos = creditos - custo;
 
-				System.out.println("Chamada feita!\n");
+				System.out.println("\nChamada feita!\n");
 				System.out.printf("Credito Atual: %.2f \n", creditos);
 
 				return;
 			} 
 
-			System.out.println("Creditos insuficientes");
+			System.out.println("\nCreditos insuficientes");
 
 			return;
 		} 

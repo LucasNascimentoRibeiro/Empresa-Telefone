@@ -9,8 +9,11 @@ public class PosPago extends Assinante {
 		this.assinatura = assinatura;
 	}
 
+	@Override
 	public void fazerChamada(GregorianCalendar data, int duracao) {
-		if (10 > numChamadas) {
+		int limiteChamada = 10;
+
+		if (limiteChamada > numChamadas) {
 			float custo = (float) (duracao * 1.04);
 
 			if (assinatura > custo) {
@@ -33,8 +36,8 @@ public class PosPago extends Assinante {
 		System.out.println("\nNúmero de chamadas excedido");
 	}
 
-	
-	public void imprimirFatura(int mes)  {
+	@Override	
+	public void imprimirFatura(int mes, int ano)  {
 
 		int qntdChamadasMes = 0;
 		int totalDuracaoChamadas = 0;
@@ -44,8 +47,9 @@ public class PosPago extends Assinante {
 				Chamada chamada = chamadas[i];
 
 				int mesChamada = (chamada.getData().get(GregorianCalendar.MONTH) + 1);
+				int anoChamada = (chamada.getData().get(GregorianCalendar.YEAR));
 
-				if (mesChamada == mes) {
+				if (mesChamada == mes && anoChamada == ano) {
 					qntdChamadasMes++;
 
 					totalDuracaoChamadas += chamada.getDuracao();
@@ -62,9 +66,7 @@ public class PosPago extends Assinante {
 
 		float totalFatura = (float) (totalDuracaoChamadas * 1.04);
 
-		System.out.println("\n- Nome: " + getNome()
-				+ "\n- CPF: " + getCpf()
-				+ "\n- Número: " + getNumero()
+		System.out.println("\n- CPF: " + getCpf()
 				+ "\n- Total Valor Chamadas: " + String.format("%.2f", totalFatura)
 				+ "\n- Total Duração Chamadas: " + totalDuracaoChamadas
 				+ "\n- Nº Chamadas: " + qntdChamadasMes

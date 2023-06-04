@@ -1,3 +1,4 @@
+import java.sql.PreparedStatement;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -5,18 +6,16 @@ import utils.Utilidades;
 
 public class Telefonia {
 
-	private PrePago[] prePagos;
-	private int numPrePagos = 0;
-
-	private PosPago[] posPagos;
-	private int numPosPagos = 0;
+	private Assinante[] assinantes;
+	private int numAssinantes = 0;
 
 	public Telefonia() {
-		this.prePagos = new PrePago[10];
-		this.posPagos = new PosPago[10];
+		this.assinantes = new Assinante[10];
 	}
 
-	public void cadastrarAssinante() {
+	public void cadastrarAssinante(Assinante assinante) {
+		limparTela();
+
 		Scanner scanner = new Scanner(System.in);
 
 		while (true) {
@@ -51,22 +50,20 @@ public class Telefonia {
 				// Cadastrar Pré-Pago
 				if (tipo == 1) {
 					PrePago novoPrePago = new PrePago(cpf, nome, numero);
-					prePagos[numPrePagos] = novoPrePago;
-
-					numPrePagos++;
+					assinante = novoPrePago;
 				}
 
 				// Cadastrar Pós-Pago
 				if (tipo == 2) {
-					// Informar o VALOR
 					System.out.print("\nDigite o VALOR da mensalidade: ");
 					float assinatura = scanner.nextFloat();
 
 					PosPago novoPosPago = new PosPago(cpf, nome, numero, assinatura);
-					posPagos[numPosPagos] = novoPosPago;
-					
-					numPosPagos++;
+					assinante = novoPosPago;
 				}
+
+				assinantes[numAssinantes] = assinante;
+				numAssinantes++;
 
 				System.out.println("\nAssinante cadastrado com sucesso!");
 
@@ -83,6 +80,30 @@ public class Telefonia {
 	}
 
 	public void listarAssinantes() {
+		PrePago[] prePagos = new PrePago[10];
+		int numPrePagos = 0;
+
+		PosPago[] posPagos = new PosPago[10];
+		int numPosPagos = 0;
+
+		for (int i = 0; i < numAssinantes; i++) {
+			Assinante assinante = assinantes[i];
+
+			try {
+				PrePago prePago = (PrePago) assinante;
+				prePagos[numPrePagos] = prePago;
+				numPrePagos++;
+			} catch (Exception e) {
+			}
+
+			try {
+				PosPago posPago = (PosPago) assinante;
+				posPagos[numPosPagos] = posPago;
+				numPosPagos++;
+			} catch (Exception e) {
+			}
+		}
+
 		System.out.print("Assinantes de Pré-Pago: ");
 		boolean prePagosVazio = Utilidades.verificarListaVazia(prePagos);
 		if (prePagosVazio) {
@@ -107,246 +128,136 @@ public class Telefonia {
 		}
 	}
 
-	public void fazerChamada() {
+	public void fazerChamada(Assinante assinante) {
 		Scanner scanner = new Scanner(System.in);
 
-		while (true) {
+		GregorianCalendar calendario = new GregorianCalendar();
+
+		// Informar DIA
+		System.out.println("\nDigite o DIA da chamada (Ex.: 01):");
+		int dia = scanner.nextInt();
+		calendario.set(GregorianCalendar.DATE, dia);
+
+		// Informar MÊS
+		System.out.println("\nDigite o MÊS da chamada (Ex.: 06):");
+		int mes = scanner.nextInt();
+		calendario.set(GregorianCalendar.MONTH, (mes - 1));
+
+		// Informar ANO
+		System.out.println("\nDigite o ANO da chamada (Ex.: 2023):");
+		int ano = scanner.nextInt();
+		calendario.set(GregorianCalendar.YEAR, ano);
+
+		// Informar MINUTO
+		System.out.println("\nDigite o MINUTO da duração da chamada (Ex.: 5):");
+		int duracao = scanner.nextInt();
+
+		assinante.fazerChamada(calendario, duracao);
+	}
+
+	public void fazerRecarga(PrePago prePago) {
+		Scanner scanner = new Scanner(System.in);
+
+		GregorianCalendar calendario = new GregorianCalendar();
+
+		// Informar DIA
+		System.out.println("\nDigite o DIA da recarga (Ex.: 01):");
+		int dia = scanner.nextInt();
+		calendario.set(GregorianCalendar.DATE, dia);
+
+		// Informar MÊS
+		System.out.println("\nDigite o MÊS da recarga (Ex.: 06):");
+		int mes = scanner.nextInt();
+		calendario.set(GregorianCalendar.MONTH, (mes - 1));
+
+		// Informar ANO
+		System.out.println("\nDigite o ANO da recarga (Ex.: 2023):");
+		int ano = scanner.nextInt();
+		calendario.set(GregorianCalendar.YEAR, ano);
+
+		// Informar VALOR
+		System.out.println("\nInforme o VALOR da recarga");
+		float valor = scanner.nextFloat();
+
+		prePago.recarregar(calendario, valor);
+	}
+
+	public void imprimirFaturas() {
+		try {
+			Scanner scanner = new Scanner(System.in);
+
 			limparTela();
 
-			System.out.println("+--------------------------+");
-			System.out.println("|                          |");
-			System.out.println("|     Selecione o tipo     |");
-			System.out.println("|       de Assinatura      |");
-			System.out.println("|                          |");
-			System.out.println("|   1. Pré-pago            |");
-			System.out.println("|   2. Pós-pago            |");
-			System.out.println("|   3. Voltar              |");
-			System.out.println("|                          |");
-			System.out.println("+--------------------------+");
+			// Informar MÊS
+			System.out.println("\nDigite o MÊS da fatura (Ex.: 06):");
+			int mes = scanner.nextInt();
 
-			System.out.print("Digite sua opção: ");
-			int tipo = scanner.nextInt();
+			// Informar ANO
+			System.out.println("\nDigite o ANO da fatura (Ex.: 2023):");
+			int ano = scanner.nextInt();
 
-			// Solicitar informações do cliente
-			if (tipo == 1 || tipo == 2) {
-				System.out.print("\nInforme o CPF do assinante(apenas números): ");
-				long cpf = scanner.nextLong();
-				scanner.nextLine();
+			PrePago[] prePagos = new PrePago[10];
+			int numPrePagos = 0;
 
-				PrePago prePago = null;
-				PosPago posPago = null;
+			PosPago[] posPagos = new PosPago[10];
+			int numPosPagos = 0;
 
-				// Localizar Pré-Pago
-				if (tipo == 1) {
-					prePago = localizarPrePago(cpf);
+			for (int i = 0; i < numAssinantes; i++) {
+				Assinante assinante = assinantes[i];
 
-					if (prePago == null) {
-						System.out.println("\nO CPF não consta no registro de assinantes Pré-Pago.");
-						avisarPressione(scanner);
-						continue;
-					}
+				try {
+					PrePago prePago = (PrePago) assinante;
+					prePagos[numPrePagos] = prePago;
+					numPrePagos++;
+				} catch (Exception e) {
 				}
 
-				// Localizar Pós-Pago
-				if (tipo == 2) {
-					posPago = localizarPosPago(cpf);
-
-					if (posPago == null) {
-						System.out.println("\nO CPF não consta no registro de assinantes Pós-Pago.");
-						avisarPressione(scanner);
-						continue;
-					}
+				try {
+					PosPago posPago = (PosPago) assinante;
+					posPagos[numPosPagos] = posPago;
+					numPosPagos++;
+				} catch (Exception e) {
 				}
+			}
 
-				GregorianCalendar calendario = new GregorianCalendar();
-
-				// Informar DIA
-				System.out.println("\nDigite o DIA da chamada (Ex.: 01):");
-				int dia = scanner.nextInt();
-				calendario.set(GregorianCalendar.DATE, dia);
-
-				// Informar MÊS
-				System.out.println("\nDigite o MÊS da chamada (Ex.: 06):");
-				int mes = scanner.nextInt();
-				calendario.set(GregorianCalendar.MONTH, (mes - 1));
-
-				// Informar ANO
-				System.out.println("\nDigite o ANO da chamada (Ex.: 2023):");
-				int ano = scanner.nextInt();
-				calendario.set(GregorianCalendar.YEAR, ano);
-
-				// Informar MINUTO
-				System.out.println("\nDigite o MINUTO da duração da chamada (Ex.: 5):");
-				int duracao = scanner.nextInt();
-
-				// Cadastrar Pré-Pago
-				if (tipo == 1) {
-					prePago.fazerChamada(calendario, duracao);
-				}
-
-				// Cadastrar Pos-Pago
-				if (tipo == 2) {
-					posPago.fazerChamada(calendario, duracao);
-				}
-
-				break;
-			} else if (tipo == 3) {
-				// Voltar
-				break;
+			System.out.print("Assinantes de Pré-Pago: ");
+			boolean prePagosVazio = Utilidades.verificarListaVazia(prePagos);
+			if (prePagosVazio) {
+				System.out.println("Nenhum.");
 			} else {
-				// Avisa quando o valor for incorreto
-				avisarOpcaoIncorreta();
-				avisarPressione(scanner);
-			}
-		}
-	}
-
-	public void fazerRecarga() {
-		Scanner scanner = new Scanner(System.in);
-
-		while (true) {
-			System.out.println("+-------------------------+");
-			System.out.println("|                         |");
-			System.out.println("|     Selecione o tipo    |");
-			System.out.println("|       de Assinatura     |");
-			System.out.println("|                         |");
-			System.out.println("|   1. Pré-pago           |");
-			System.out.println("|   2. Voltar             |");
-			System.out.println("|                         |");
-			System.out.println("+-------------------------+");
-
-			System.out.print("Digite sua opção: ");
-			int tipo = scanner.nextInt();
-
-			switch (tipo) {
-				// Solicitar informações do cliente PRÉ-PAGO
-				case 1:
-					System.out.print("\nInforme o CPF do assinante(apenas números): ");
-					long cpf = scanner.nextLong();
-					scanner.nextLine();
-
-					PrePago prePago = localizarPrePago(cpf);
-
-					if (prePago == null) {
-						System.out.println("\nO CPF não consta no registro de assinantes Pré-Pago.");
-						break;
-					}
-
-					GregorianCalendar calendario = new GregorianCalendar();
-
-					// Informar DIA
-					System.out.println("\nDigite o DIA da recarga (Ex.: 01):");
-					int dia = scanner.nextInt();
-					calendario.set(GregorianCalendar.DATE, dia);
-
-					// Informar MÊS
-					System.out.println("\nDigite o MÊS da recarga (Ex.: 06):");
-					int mes = scanner.nextInt();
-					calendario.set(GregorianCalendar.MONTH, (mes - 1));
-
-					// Informar ANO
-					System.out.println("\nDigite o ANO da recarga (Ex.: 2023):");
-					int ano = scanner.nextInt();
-					calendario.set(GregorianCalendar.YEAR, ano);
-
-					// Informar VALOR
-					System.out.println("\nInforme o VALOR da recarga");
-					float valor = scanner.nextFloat();
-
-					prePago.recarregar(calendario, valor);
-
-					break;
-
-				// Voltar
-				case 2:
-					break;
-
-				// Avisa quando o valor for incorreto
-				default:
-					avisarOpcaoIncorreta();
-					avisarPressione(scanner);
-					break;
+				for (int i = 0; i < numPrePagos; i++) {
+					PrePago prePago = prePagos[i];
+					prePago.imprimirFatura(mes, ano);
+				}
 			}
 
-			break;
-		}
-	}
-
-	public void imprimirFatura() {
-		Scanner scanner = new Scanner(System.in);
-
-		while (true) {
-			limparTela();
-
-			System.out.println("+--------------------------+");
-			System.out.println("|                          |");
-			System.out.println("|     Selecione o tipo     |");
-			System.out.println("|       de Assinatura      |");
-			System.out.println("|                          |");
-			System.out.println("|   1. Pré-pago            |");
-			System.out.println("|   2. Pós-pago            |");
-			System.out.println("|   3. Voltar              |");
-			System.out.println("|                          |");
-			System.out.println("+--------------------------+");
-
-			System.out.print("Digite sua opção: ");
-			int tipo = scanner.nextInt();
-
-			if (tipo == 1 || tipo == 2) {
-				// Informar MÊS
-				System.out.println("\nDigite o MÊS da fatura (Ex.: 06):");
-				int mes = scanner.nextInt();
-
-				if(tipo == 1) {
-					for (int i = 0; i < numPrePagos; i++) {
-						PrePago prePago = prePagos[i];
-						prePago.imprimirFatura(mes);
-					}
-				}
-			
-				if (tipo == 2) {
-					for (int i = 0; i < numPosPagos; i++) {
-						PosPago posPago = posPagos[i];
-						posPago.imprimirFatura(mes);
-					}
-				}
-
-				break;
-			} else if (tipo == 3) {
-				// Voltar
-				break;
+			System.out.print("\nAssinantes de Pós-Pago: ");
+			boolean posPagosVazio = Utilidades.verificarListaVazia(posPagos);
+			if (posPagosVazio) {
+				System.out.println("Nenhum.");
 			} else {
-				// Avisa quando o valor for incorreto
-				avisarOpcaoIncorreta();
-				avisarPressione(scanner);
+				for (int i = 0; i < numPosPagos; i++) {
+					PosPago posPago = posPagos[i];
+					posPago.imprimirFatura(mes, ano);
+				}
 			}
+
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e.getMessage());
 		}
 	}
 
-	private PrePago localizarPrePago(long cpf) {
-		for (int i = 0; i < numPrePagos; i++) {
-			PrePago prePago = prePagos[i];
+	private Assinante localizarAssinante(long cpf) {
+		for (int i = 0; i < numAssinantes; i++) {
+			Assinante assinante = assinantes[i];
 
-			if (cpf == prePago.getCpf()) {
-				return prePago;
+			if (cpf == assinante.getCpf()) {
+				return assinante;
 			}
 		}
 
 		return null;
 	}
-
-	private PosPago localizarPosPago(long cpf) {
-		for (int i = 0; i < numPosPagos; i++) {
-			PosPago posPago = posPagos[i];
-
-			if (cpf == posPago.getCpf()) {
-				return posPago;
-			}
-		}
-
-		return null;
-	}
-
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
@@ -364,7 +275,6 @@ public class Telefonia {
 			main(args);
 		}
 	}
-
 
 	// FUNÇÕES DE ORGANIZAÇÃO
 	private static void exibirMenu() {
@@ -398,7 +308,8 @@ public class Telefonia {
 
 			// Cadastrar Assinantes
 			case 1:
-				telefonia.cadastrarAssinante();
+				Assinante cadastrarAssinante = telefonia.assinantes[telefonia.numAssinantes];
+				telefonia.cadastrarAssinante(cadastrarAssinante);
 				break;
 
 			// Listar Assinantes
@@ -408,17 +319,22 @@ public class Telefonia {
 
 			// Fazer Chamada
 			case 3:
-				telefonia.fazerChamada();
+				long chamadaCpf = inserirCPF(scanner);
+				Assinante chamadaAssinante = telefonia.localizarAssinante(chamadaCpf);
+				telefonia.fazerChamada(chamadaAssinante);
 				break;
 
 			// Fazer Recarga
 			case 4:
-				telefonia.fazerRecarga();
+				long recargaCpf = inserirCPF(scanner);
+				Assinante recargaAssinante = telefonia.localizarAssinante(recargaCpf);
+				PrePago prePago = (PrePago) recargaAssinante;
+				telefonia.fazerRecarga(prePago);
 				break;
 
 			// Imprimir Faturas
 			case 5:
-				telefonia.imprimirFatura();
+				telefonia.imprimirFaturas();
 				break;
 
 			// Sair do Programa
@@ -471,4 +387,10 @@ public class Telefonia {
 		System.exit(0);
 	}
 
+	private static long inserirCPF(Scanner scanner) {
+		System.out.print("\nInforme o CPF do assinante(apenas números): ");
+		long cpf = scanner.nextLong();
+		scanner.nextLine();
+		return cpf;
+	}
 }

@@ -13,4 +13,14 @@ public class Utilidades {
 
         return listaEstaVazia;
     }
+
+    public static boolean verificarObjetoVazio(Object item) {
+		boolean objetoVazio = true;
+
+		if (item != null) {
+			objetoVazio = false;
+		}
+
+        return objetoVazio;
+    }
 }

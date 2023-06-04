@@ -25,6 +25,7 @@ public class PrePago extends Assinante {
 		}
 	}
 
+	@Override
 	public void fazerChamada(GregorianCalendar data, int duracao) {
 		if (10 > numChamadas) {
 			float custo = (float) (duracao * 1.45);
@@ -49,7 +50,8 @@ public class PrePago extends Assinante {
 		System.out.println("Número de chamadas excedido");
 	}
 
-	public void imprimirFatura(int mes)  {
+	@Override
+	public void imprimirFatura(int mes, int ano)  {
 		int qntdRecargasMes = 0;
 		float totalValorRecarga = 0;
 		String listaRecargas = "";
@@ -58,8 +60,9 @@ public class PrePago extends Assinante {
 				Recarga recarga = recargas[i];
 
 				int mesChamada = (recarga.getData().get(GregorianCalendar.MONTH) + 1);
+				int anoChamada = (recarga.getData().get(GregorianCalendar.YEAR));
 
-				if (mesChamada == mes) {
+				if (mesChamada == mes && anoChamada == ano) {
 					qntdRecargasMes++;
 
 					totalValorRecarga += recarga.getValor();
@@ -80,8 +83,9 @@ public class PrePago extends Assinante {
 				Chamada chamada = chamadas[i];
 
 				int mesChamada = (chamada.getData().get(GregorianCalendar.MONTH) + 1);
+				int anoChamada = (chamada.getData().get(GregorianCalendar.YEAR));
 
-				if (mesChamada == mes) {
+				if (mesChamada == mes && anoChamada == ano) {
 					qntdChamadasMes++;
 					
 					totalDuracaoChamadas += chamada.getDuracao();
@@ -98,9 +102,7 @@ public class PrePago extends Assinante {
 
 		float creditos = (totalValorRecarga - (float) (totalDuracaoChamadas * 1.45));
 
-		System.out.println("\n- Nome: " + getNome()
-				+ "\n- CPF: " + getCpf()
-				+ "\n- Número: " + getNumero()
+		System.out.println("\n- CPF: " + getCpf()
 				+ "\n- Créditos: " + String.format("%.2f", creditos)
 				+ "\n- Total Valor Recarga: " + String.format("%.2f", totalValorRecarga)
 				+ "\n- Nº Recargas: " + qntdRecargasMes
